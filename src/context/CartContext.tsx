@@ -25,7 +25,6 @@ export const CartContextProvider = ({ children }: CartContextProviderProps) => {
 
   const updateQty: CartContext['updateQty'] = useCallback(
     (productItem, mode) => {
-      console.log('exec');
       setCart((prev) => {
         const newProducts = structuredClone(prev);
         const itemIndex = newProducts.findIndex(
@@ -59,7 +58,6 @@ export const CartContextProvider = ({ children }: CartContextProviderProps) => {
     () => ({ products: cart, updateQty }),
     [cart, updateQty],
   );
-  console.log(memoedValue);
   return (
     <cartContext.Provider value={memoedValue}>{children}</cartContext.Provider>
   );
