@@ -1,4 +1,3 @@
-import React from 'react';
 import { ProductReview } from '../../dto/product.dto';
 import { RatingCategory } from '../../types/Rating';
 import { renderStars } from '../../utils/renderStars';
