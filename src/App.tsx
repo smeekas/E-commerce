@@ -3,11 +3,14 @@ import { queryClient } from './config/query.config';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './Router/Router';
 import './App.css';
+import { CartContextProvider } from './context/CartContext';
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <CartContextProvider>
+        <RouterProvider router={router} />
+      </CartContextProvider>
     </QueryClientProvider>
   );
 }
