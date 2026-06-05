@@ -3,6 +3,7 @@ import Home from '../pages/Home';
 import Products from '../pages/Products';
 import Cart from '../pages/Cart';
 import { createBrowserRouter, RouteObject } from 'react-router-dom';
+import ProductDetail from '../pages/ProductDetail';
 
 const routes: RouteObject[] = [
   {
@@ -16,6 +17,10 @@ const routes: RouteObject[] = [
       {
         path: '/products',
         element: <Products />,
+      },
+      {
+        path: '/products/:id',
+        element: <ProductDetail />,
       },
       {
         path: '/cart',
