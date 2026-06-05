@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { QueryKey } from '../constants/QueryKey';
 import { API } from '../config/axios.config';
 import { paths } from '../constants/api';
-import ProductDetails from '../components/ProductDetail/ProductDetail';
+import ProductDetails from '../components/ProductDetails/ProductDetails';
 import { Product } from '../dto/product.dto';
 import Spin from '../components/Spin/Spin';
 

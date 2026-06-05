@@ -19,7 +19,7 @@ function Header() {
             <NavLink to='/products'>Products</NavLink>
           </li>
           <li>
-            <NavLink to='/cart'>Cart ({totalQty})</NavLink>
+            <NavLink to='/cart'>Cart {totalQty > 0 && `(${totalQty})`}</NavLink>
           </li>
         </ul>
       </nav>
