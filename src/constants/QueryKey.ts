@@ -1,3 +1,4 @@
 export enum QueryKey {
-    AllProducts='allProducts'
+  AllProducts = 'allProducts',
+  ProductDetail = 'productDetail',
 }

@@ -1,3 +1,27 @@
 * {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  box-sizing: border-box;
+}
+
+.ta-center {
+  text-align: center;
+}
+
+button {
+  padding: 8px 12px;
+  background-color: rgb(56, 176, 255);
+  border: none;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled),
+button:focus:not(:disabled) {
+  padding: 8px 12px;
+  background-color: rgb(100, 193, 255);
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
