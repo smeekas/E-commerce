@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Product } from '../../dto/product.dto';
 import './ProductDetails.css';
 import Ratings from '../Ratings/Ratings';
+import { useCart } from '../../context/CartContext';
+import { getDiscountedValue } from '../../utils/discount';
 
 interface ProductDetailProps {
   product: Product;
@@ -9,14 +11,18 @@ interface ProductDetailProps {
 
 function ProductDetails({ product }: ProductDetailProps) {
   const [activeImage, setActiveImage] = useState(product.thumbnail);
-
-  const discountedPrice = (
-    product.price *
-    (1 - product.discountPercentage / 100)
-  ).toFixed(2);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const { updateQty } = useCart();
 
   const isInStock = product.availabilityStatus === 'In Stock';
 
+  const addToCart = () => {
+    updateQty(product, 'inc');
+    setAddedToCart(true);
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 3000);
+  };
   return (
     <>
       <div className='product-detail'>
@@ -47,7 +53,9 @@ function ProductDetails({ product }: ProductDetailProps) {
           </p>
 
           <div className='product-detail__price-row'>
-            <span className='product-detail__price'>${discountedPrice}</span>
+            <span className='product-detail__price'>
+              ${getDiscountedValue(product.price, product.discountPercentage)}
+            </span>
             <span className='product-detail__original-price'>
               ${product.price.toFixed(2)}
             </span>
@@ -86,7 +94,9 @@ function ProductDetails({ product }: ProductDetailProps) {
               <span>{product.returnPolicy}</span>
             </div>
           </div>
-          <button className='product-detail__add-btn'>Add to Cart</button>
+          <button className='product-detail__add-btn' onClick={addToCart}>
+            {addedToCart ? 'Added!' : 'Add to Cart'}
+          </button>
         </div>
       </div>
       <Ratings rating={product.reviews} />
