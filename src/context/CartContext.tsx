@@ -12,10 +12,7 @@ export type CartContext = {
   products: (Product & { qty: number })[];
   updateQty: (arg0: Product, arg1: 'inc' | 'dec') => void;
 };
-const cartContext = createContext<CartContext>({
-  products: [],
-  updateQty: () => {},
-});
+const cartContext = createContext<CartContext | null>(null);
 
 type CartContextProviderProps = {
   children: ReactNode;

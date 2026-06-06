@@ -15,7 +15,6 @@ function ProductDetails({ product }: ProductDetailsProps) {
   const { updateQty } = useCart();
 
   const isInStock = product.availabilityStatus === 'In Stock';
-
   const addToCart = () => {
     updateQty(product, 'inc');
     setAddedToCart(true);
