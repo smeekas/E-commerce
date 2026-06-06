@@ -68,3 +68,19 @@ VITE_API_PATH=https://dummyjson.com
 - Cart state lives in a React Context with a `useCart()` hook, so no prop drilling. Adding to cart is capped at the product's stock value, enforced on the client without an extra request.
 - API shapes are typed via a DTO layer, route paths live in constants, and React Query cache keys use an enum, no magic strings anywhere.
 - The loading spinner uses a React Portal so it overlays correctly regardless of where it's triggered.
+- ErrorBoundary for catching global run-time errors
+
+## Improvements that can be done with extra time
+- Filters in product listing page (this public API supports filters)
+- Sorting in product listing page (this public API supports sorting)
+- Toggle for different views in product listing (card,list view)
+- Better error handling if API fails with reusable ErrorHandler component
+- Backend based cart (this public API do not supports it though)
+- Review section in product detail page
+- Restriction on cart unless users logs in
+
+
+
+
+
+
