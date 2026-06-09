@@ -8,14 +8,16 @@ import './ProductsList.css';
 
 import { useSearchParams } from 'react-router-dom';
 import { PER_PAGE } from '../../constants/global';
-import { ChangeEvent, useMemo } from 'react';
-import { debounce } from '../../utils/debounce';
-import Spin from '../Spin/Spin';
+import ProductFilters from '../ProductFilters/ProductFilters';
+import { Filters } from '../../constants/filters';
+import ProductSkeleton from './ProductSkeleton';
+
+const SKELETON_COUNT = 8;
 
 function ProductsList() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const queryPage = searchParams.get('page');
-  const querySearch = searchParams.get('search');
+  const queryPage = searchParams.get(Filters.Page);
+  const querySearch = searchParams.get(Filters.Search);
   const page = queryPage !== null && !Number.isNaN(queryPage) ? +queryPage : 1;
   const search = querySearch || '';
   const { data, isLoading } = useQuery({
@@ -43,40 +45,23 @@ function ProductsList() {
       return prev;
     });
   };
-  const onSearch = useMemo(
-    () =>
-      debounce((e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value.trim().length === 0) return;
-        setSearchParams((prev) => {
-          prev.set('page', '1');
-          prev.set('search', e.target.value.trim());
-          return prev;
-        });
-      }, 400),
-    [setSearchParams],
-  );
+
   return (
     <div className='list-container'>
-      <div className='search-container'>
-        <input
-          className='search'
-          defaultValue={search}
-          placeholder='search...'
-          onChange={onSearch}
-        />
+      <ProductFilters />
+      <div className='product-list' role='list' aria-busy={isLoading}>
+        {isLoading
+          ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+              <ProductSkeleton key={i} />
+            ))
+          : data?.data?.products?.map((prodItem) => (
+              <ProductCard key={prodItem.id} product={prodItem} />
+            ))}
       </div>
-      <Spin spin={isLoading}>
-        <div className='product-list' role='list'>
-          {data?.data?.products?.map((prodItem) => {
-            return <ProductCard key={prodItem.id} product={prodItem} />;
-          })}
-        </div>
-      </Spin>
       <div className='pagination'>
         <button disabled={!hasLess} onClick={prevPage}>
           Prev
         </button>
-
         <button disabled={!hasMore} onClick={nextPage}>
           Next
         </button>

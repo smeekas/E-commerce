@@ -10,7 +10,12 @@ function Spin({ children, spin }: SpinProps) {
   if (!spin) return children;
   return (
     <>
-      {createPortal(<div className='spin'>Loading...</div>, document.body)}
+      {createPortal(
+        <div className='spin' role='status' aria-label='Loading'>
+          <div className='spin__ring' />
+        </div>,
+        document.body,
+      )}
       {children}
     </>
   );

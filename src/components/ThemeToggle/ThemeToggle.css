@@ -1,0 +1,10 @@
+.theme-btn {
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 8px;
+  padding: 4px;
+}
+.theme-btn:hover {
+  background-color: #383860ab;
+}

@@ -3,6 +3,7 @@ import { Product } from '../../dto/product.dto';
 import './ProductCard.css';
 import { renderStars } from '../../utils/renderStars';
 import { navigationPaths } from '../../constants/navigationPaths';
+import { useCart } from '../../context/CartContext';
 
 interface Props {
   product: Product;
@@ -10,6 +11,8 @@ interface Props {
 
 function ProductCard({ product }: Props) {
   const navigate = useNavigate();
+  const { updateQty, products } = useCart();
+  const inCart = products.some((p) => p.id === product.id);
   const discountedPrice = (
     product.price *
     (1 - product.discountPercentage / 100)
@@ -20,7 +23,6 @@ function ProductCard({ product }: Props) {
       className='product-card'
       role='listitem'
       onClick={() => navigate(navigationPaths.productDetail(product.id))}
-      
     >
       <div className='product-card__image-wrapper'>
         <img
@@ -53,6 +55,15 @@ function ProductCard({ product }: Props) {
             ${product.price.toFixed(2)}
           </span>
         </div>
+        <button
+          className={`product-card__add-btn${inCart ? ' product-card__add-btn--in-cart' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            updateQty(product, 'inc');
+          }}
+        >
+          {inCart ? 'In Cart' : 'Add'}
+        </button>
       </div>
     </div>
   );

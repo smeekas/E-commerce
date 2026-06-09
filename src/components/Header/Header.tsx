@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import './Header.css';
 import { useCart } from '../../context/CartContext';
+import ThemeToggle from '../ThemeToggle/ThemeToggle';
 
 function Header() {
   const { products } = useCart();
@@ -19,7 +20,15 @@ function Header() {
             <NavLink to='/products'>Products</NavLink>
           </li>
           <li>
-            <NavLink to='/cart'>Cart {totalQty > 0 && `(${totalQty})`}</NavLink>
+            <NavLink to='/cart'>
+              Cart
+              {totalQty > 0 && (
+                <span className='header__cart-badge'>{totalQty}</span>
+              )}
+            </NavLink>
+          </li>
+          <li>
+            <ThemeToggle />
           </li>
         </ul>
       </nav>

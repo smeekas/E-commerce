@@ -1,44 +1,73 @@
 .rating-detail {
-  gap: 2.5rem;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background-color: var(--color-surface);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07), 0 4px 16px rgba(0, 0, 0, 0.07);
   padding: 2rem;
   max-width: 960px;
-  margin: 2rem auto;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: 0 auto 2rem;
 }
+
 .review-heading {
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.2px;
 }
+
 .rating-summary {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
 }
 
 .rating-meter {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
 }
-.rating-meter meter::-webkit-meter-optimum-value {
-  background: rgb(255, 221, 0);
-}
+
 .rating-meter meter {
   flex: 1;
+  height: 6px;
+  border-radius: 99px;
+  overflow: hidden;
 }
+
+.rating-meter meter::-webkit-meter-optimum-value {
+  background: var(--color-star);
+  border-radius: 99px;
+}
+
+.rating-meter meter::-webkit-meter-bar {
+  background: var(--color-border);
+  border: none;
+  border-radius: 99px;
+}
+
 .rating-meter .percentage {
-  min-width: 50px;
+  min-width: 44px;
+  text-align: right;
+  font-size: 0.78rem;
+  color: var(--color-text-lighter);
 }
 
 .total {
-  font-size: 16px;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
 }
 
 .detail {
   display: flex;
-  gap: 12px;
-  padding: 12px 0px;
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.85rem;
+  color: var(--color-text-label);
+  line-height: 1.55;
 }
