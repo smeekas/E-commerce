@@ -26,7 +26,12 @@ function CartCard({ product }: CartCardProps) {
       </div>
 
       <div className='cart-card__body'>
-        <Link className='cart-card__title' to={navigationPaths.productDetail(product.id)}>{product.title}</Link>
+        <Link
+          className='cart-card__title'
+          to={navigationPaths.productDetail(product.id)}
+        >
+          {product.title}
+        </Link>
         <div className='cart-card__price-row'>
           <span className='cart-card__price'>
             ${getDiscountedValue(product.price, product.discountPercentage)}
@@ -35,13 +40,20 @@ function CartCard({ product }: CartCardProps) {
         </div>
       </div>
 
-      <div className='cart-card__qty'>
-        <span className='cart-card__qty-label'>Qty</span>
-        <span className='cart-card__qty-value'>{product.qty}</span>
-      </div>
-      <div className='cart-card__action'>
-        <button onClick={() => updateQty(product, 'inc')}>+</button>
-        <button onClick={() => updateQty(product, 'dec')}>-</button>
+      <div className='cart-card__stepper'>
+        <button
+          className='cart-card__stepper-btn'
+          onClick={() => updateQty(product, 'dec')}
+        >
+          −
+        </button>
+        <span className='cart-card__stepper-qty'>{product.qty}</span>
+        <button
+          className='cart-card__stepper-btn'
+          onClick={() => updateQty(product, 'inc')}
+        >
+          +
+        </button>
       </div>
     </div>
   );
