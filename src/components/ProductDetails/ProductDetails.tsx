@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Product } from '../../dto/product.dto';
 import './ProductDetails.css';
+import '../../common.css';
 import Ratings from '../Ratings/Ratings';
 import { useCart } from '../../context/CartContext';
 import { getDiscountedValue } from '../../utils/discount';
+import toast from 'react-hot-toast';
+import { Messages } from '../../constants/messages';
 
 interface ProductDetailsProps {
   product: Product;
@@ -12,12 +15,13 @@ interface ProductDetailsProps {
 function ProductDetails({ product }: ProductDetailsProps) {
   const [activeImage, setActiveImage] = useState(product.thumbnail);
   const [addedToCart, setAddedToCart] = useState(false);
-  const { updateQty } = useCart();
-
+  const { updateQty, products } = useCart();
+  const inCart = products.some((p) => p.id === product.id);
   const isInStock = product.availabilityStatus === 'In Stock';
   const addToCart = () => {
     updateQty(product, 'inc');
     setAddedToCart(true);
+    toast.success(Messages.ToastMessages.AddToCart(product.title));
     setTimeout(() => {
       setAddedToCart(false);
     }, 3000);
@@ -94,8 +98,12 @@ function ProductDetails({ product }: ProductDetailsProps) {
             </div>
           </div>
           {product.stock > 0 && (
-            <button className='product-detail__add-btn' onClick={addToCart}>
-              {addedToCart ? 'Added!' : 'Add to Cart'}
+            <button
+              className={`product-detail__add-btn ${inCart ? 'product-card__add-btn--in-cart' : ''}`}
+              title={inCart ? 'Add more' : 'add to cart'}
+              onClick={addToCart}
+            >
+              {addedToCart ? 'Added!' : inCart ? 'In Cart' : 'Add'}
             </button>
           )}
         </div>

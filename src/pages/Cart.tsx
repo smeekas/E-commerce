@@ -3,10 +3,12 @@ import CartCard from '../components/CartCard/CartCard';
 import { useCart } from '../context/CartContext';
 import { CartDetail } from '../types/cart';
 import './Cart.css';
+import { useRef } from 'react';
+import { DUMMY_COUPON } from '../constants/coupons';
 
 function Cart() {
-  const { products } = useCart();
-
+  const { products, setDiscount, discount } = useCart();
+  const ref = useRef<HTMLInputElement | null>(null);
   if (products.length === 0) {
     return (
       <div className='cart'>
@@ -52,6 +54,22 @@ function Cart() {
     { totalItems: 0, price: 0, finalPrice: 0, discount: 0 },
   );
 
+  const onApply = () => {
+    if (!ref.current) return;
+    const inputValue = ref.current.value.trim();
+    const coupon = DUMMY_COUPON.find(
+      (couponItem) => couponItem.coupon === inputValue,
+    );
+    if (coupon) {
+      setDiscount(coupon);
+      ref.current.value = '';
+    }
+  };
+  let couponDiscount = 0;
+
+  if (discount) {
+    couponDiscount = cartInfo.price * (discount.discount / 100);
+  }
   return (
     <div className='cart'>
       <h1 className='cart__title'>Shopping Cart</h1>
@@ -74,10 +92,27 @@ function Cart() {
             <span>Savings</span>
             <span>-${cartInfo.discount.toFixed(2)}</span>
           </div>
+          {couponDiscount > 0 && (
+            <div className='cart__summary-row cart__summary-row--savings'>
+              <span>Coupon discount</span>
+              <span>-${couponDiscount.toFixed(2)}</span>
+            </div>
+          )}
+          <div className='coupon-container'>
+            <input placeholder='coupon code' className='coupon' ref={ref} />
+            <button onClick={onApply}>Apply</button>
+          </div>
           <div className='cart__summary-divider' />
+          <div className='coupon-list'>
+            {discount && (
+              <button onClick={() => setDiscount(null)}>
+                {discount.coupon} X
+              </button>
+            )}
+          </div>
           <div className='cart__summary-row cart__summary-row--total'>
             <span>Total</span>
-            <span>${cartInfo.finalPrice.toFixed(2)}</span>
+            <span>${(cartInfo.finalPrice - couponDiscount).toFixed(2)}</span>
           </div>
           <button className='cart__checkout-btn'>Proceed to Checkout</button>
         </aside>

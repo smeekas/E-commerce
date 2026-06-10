@@ -11,6 +11,8 @@ import { Product } from '../dto/product.dto';
 export type CartContext = {
   products: (Product & { qty: number })[];
   updateQty: (arg0: Product, arg1: 'inc' | 'dec') => void;
+  discount: { coupon: string; discount: number } | null;
+  setDiscount: (arg0: CartContext['discount']) => void;
 };
 const cartContext = createContext<CartContext | null>(null);
 
@@ -19,6 +21,10 @@ type CartContextProviderProps = {
 };
 export const CartContextProvider = ({ children }: CartContextProviderProps) => {
   const [cart, setCart] = useState<CartContext['products']>([]);
+  // usually discount should be managed from BE, but for assignment purpose I am managing it in FE
+  const [discount, setDiscount] = useState<CartContext['discount'] | null>(
+    null,
+  );
 
   const updateQty: CartContext['updateQty'] = useCallback(
     (productItem, mode) => {
@@ -52,8 +58,8 @@ export const CartContextProvider = ({ children }: CartContextProviderProps) => {
   );
 
   const memoedValue = useMemo<CartContext>(
-    () => ({ products: cart, updateQty }),
-    [cart, updateQty],
+    () => ({ products: cart, updateQty, discount, setDiscount }),
+    [cart, discount, updateQty],
   );
   return (
     <cartContext.Provider value={memoedValue}>{children}</cartContext.Provider>

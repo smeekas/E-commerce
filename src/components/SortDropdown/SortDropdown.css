@@ -99,6 +99,7 @@
   color: var(--color-text-primary);
   border-radius: 7px;
   cursor: pointer;
+  min-width: 200px;
   transition: background 0.1s;
 }
 
