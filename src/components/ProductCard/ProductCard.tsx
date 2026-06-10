@@ -1,9 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { Product } from '../../dto/product.dto';
 import './ProductCard.css';
+import '../../common.css';
 import { renderStars } from '../../utils/renderStars';
 import { navigationPaths } from '../../constants/navigationPaths';
 import { useCart } from '../../context/CartContext';
+import toast from 'react-hot-toast';
+import { Messages } from '../../constants/messages';
 
 interface Props {
   product: Product;
@@ -56,10 +59,12 @@ function ProductCard({ product }: Props) {
           </span>
         </div>
         <button
-          className={`product-card__add-btn${inCart ? ' product-card__add-btn--in-cart' : ''}`}
+          className={`product-card__add-btn ${inCart ? 'product-card__add-btn--in-cart' : ''}`}
+          title={inCart ? 'Add more' : 'add to cart'}
           onClick={(e) => {
             e.stopPropagation();
             updateQty(product, 'inc');
+            toast.success(Messages.ToastMessages.AddToCart(product.title));
           }}
         >
           {inCart ? 'In Cart' : 'Add'}

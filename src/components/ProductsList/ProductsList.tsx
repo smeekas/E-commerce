@@ -11,6 +11,7 @@ import { PER_PAGE } from '../../constants/global';
 import ProductFilters from '../ProductFilters/ProductFilters';
 import { Filters } from '../../constants/filters';
 import ProductSkeleton from './ProductSkeleton';
+import PromotedProducts from '../PromotedProducts/PromotedProducts';
 
 const SKELETON_COUNT = 8;
 
@@ -18,16 +19,21 @@ function ProductsList() {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryPage = searchParams.get(Filters.Page);
   const querySearch = searchParams.get(Filters.Search);
+  const sortBy = searchParams.get(Filters.SortBy);
+
+  const order = searchParams.get(Filters.Order);
   const page = queryPage !== null && !Number.isNaN(queryPage) ? +queryPage : 1;
   const search = querySearch || '';
   const { data, isLoading } = useQuery({
-    queryKey: [QueryKey.AllProducts, search, page],
+    queryKey: [QueryKey.AllProducts, search, page, sortBy, order],
     queryFn: () =>
       API.get<ProductsResponse>(paths.products, {
         params: {
           q: search,
           limit: PER_PAGE,
           skip: PER_PAGE * (page - 1),
+          sortBy,
+          order,
         },
       }),
   });
@@ -35,13 +41,13 @@ function ProductsList() {
   const hasLess = page > 1;
   const nextPage = () => {
     setSearchParams((prev) => {
-      prev.set('page', (page + 1).toString());
+      prev.set(Filters.Page, (page + 1).toString());
       return prev;
     });
   };
   const prevPage = () => {
     setSearchParams((prev) => {
-      prev.set('page', (page - 1).toString());
+      prev.set(Filters.Page, (page - 1).toString());
       return prev;
     });
   };
@@ -49,6 +55,7 @@ function ProductsList() {
   return (
     <div className='list-container'>
       <ProductFilters />
+      <PromotedProducts />
       <div className='product-list' role='list' aria-busy={isLoading}>
         {isLoading
           ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (

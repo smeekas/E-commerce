@@ -6,19 +6,23 @@ export interface SortOption {
   value: string;
 }
 
-interface Props {
+interface SortDropdownProps {
   options: SortOption[];
   value: string;
   onChange: (value: string) => void;
   label?: string;
 }
 
-function SortDropdown({ options, value, onChange, label = 'Sort by' }: Props) {
+function SortDropdown({
+  options,
+  value,
+  onChange,
+  label = 'Sort by',
+}: SortDropdownProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const selected = options.find((o) => o.value === value);
-
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
