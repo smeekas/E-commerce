@@ -11,6 +11,7 @@ import { PER_PAGE } from '../../constants/global';
 import ProductFilters from '../ProductFilters/ProductFilters';
 import { Filters } from '../../constants/filters';
 import ProductSkeleton from './ProductSkeleton';
+import PromotedProducts from '../PromotedProducts/PromotedProducts';
 
 const SKELETON_COUNT = 8;
 
@@ -23,7 +24,7 @@ function ProductsList() {
   const order = searchParams.get(Filters.Order);
   const page = queryPage !== null && !Number.isNaN(queryPage) ? +queryPage : 1;
   const search = querySearch || '';
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isRefetching } = useQuery({
     queryKey: [QueryKey.AllProducts, search, page, sortBy, order],
     queryFn: () =>
       API.get<ProductsResponse>(paths.products, {
@@ -50,8 +51,9 @@ function ProductsList() {
       return prev;
     });
   };
-  const hasProducts =
-    !isLoading && data?.data && data?.data.products.length > 0;
+  const isBusy = isLoading || isRefetching;
+  const hasProducts = !isBusy && !!(data?.data && data.data.products.length > 0);
+
   return (
     <div className='list-container'>
       <aside className='filters-column'>
@@ -59,32 +61,31 @@ function ProductsList() {
       </aside>
 
       <main className='content-column'>
-        {/* <PromotedProducts /> */}
-        {!hasProducts ? (
-          <div className='error'>not found</div>
-        ) : (
+        <PromotedProducts />
+        {isBusy ? (
+          <div className='product-list' role='list' aria-busy={true}>
+            {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+              <ProductSkeleton key={i} />
+            ))}
+          </div>
+        ) : hasProducts ? (
           <>
-            <div className='product-list' role='list' aria-busy={isLoading}>
-              {isLoading
-                ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
-                    <ProductSkeleton key={i} />
-                  ))
-                : data?.data?.products?.map((prodItem) => (
-                    <ProductCard key={prodItem.id} product={prodItem} />
-                  ))}
+            <div className='product-list' role='list' aria-busy={false}>
+              {data?.data?.products?.map((prodItem) => (
+                <ProductCard key={prodItem.id} product={prodItem} />
+              ))}
+            </div>
+            <div className='pagination'>
+              <button disabled={!hasLess} onClick={prevPage}>
+                Prev
+              </button>
+              <button disabled={!hasMore} onClick={nextPage}>
+                Next
+              </button>
             </div>
           </>
-        )}
-
-        {hasProducts && (
-          <div className='pagination'>
-            <button disabled={!hasLess} onClick={prevPage}>
-              Prev
-            </button>
-            <button disabled={!hasMore} onClick={nextPage}>
-              Next
-            </button>
-          </div>
+        ) : (
+          <div className='error'>not found</div>
         )}
       </main>
     </div>
