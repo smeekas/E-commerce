@@ -11,7 +11,6 @@ import { PER_PAGE } from '../../constants/global';
 import ProductFilters from '../ProductFilters/ProductFilters';
 import { Filters } from '../../constants/filters';
 import ProductSkeleton from './ProductSkeleton';
-import PromotedProducts from '../PromotedProducts/PromotedProducts';
 
 const SKELETON_COUNT = 8;
 
