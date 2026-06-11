@@ -4,6 +4,7 @@ import Products from '../pages/Products';
 import Cart from '../pages/Cart';
 import { createBrowserRouter, RouteObject } from 'react-router-dom';
 import ProductDetail from '../pages/ProductDetail';
+import ShippingForm from '../components/ShippingForm/ShippingForm';
 
 const routes: RouteObject[] = [
   {
@@ -24,7 +25,16 @@ const routes: RouteObject[] = [
       },
       {
         path: '/cart',
-        element: <Cart />,
+        children: [
+          {
+            path: '',
+            element: <Cart />,
+          },
+          {
+            path: '/cart/shipping',
+            element: <ShippingForm />,
+          },
+        ],
       },
     ],
   },

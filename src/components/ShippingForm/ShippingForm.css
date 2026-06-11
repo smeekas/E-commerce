@@ -1,0 +1,119 @@
+.shipping-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+.shipping-form__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 24px;
+  letter-spacing: -0.2px;
+}
+
+.shipping-form {
+  background-color: var(--color-surface);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.07),
+    0 4px 16px rgba(0, 0, 0, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.shipping-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media screen and (max-width: 600px) {
+  .shipping-form__row {
+    grid-template-columns: 1fr;
+  }
+
+  .shipping-form {
+    padding: 20px;
+  }
+}
+
+.shipping-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shipping-form__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.2px;
+}
+
+.shipping-form__input {
+  font-size: 0.9375rem;
+  font-family: inherit;
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-border-input);
+  border-radius: 10px;
+  background-color: var(--color-input-background);
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+  color: var(--color-text-primary);
+}
+
+.shipping-form__input::placeholder {
+  color: var(--color-text-disabled);
+}
+
+.shipping-form__input:focus {
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px var(--color-brand-ring);
+}
+
+.shipping-form__input:hover:not(:focus) {
+  border-color: var(--color-border-subtle);
+}
+
+.shipping-form__submit {
+  margin-top: 12px;
+  width: 100%;
+  background-color: var(--color-brand);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+  letter-spacing: -0.2px;
+}
+
+.shipping-form__submit:hover {
+  background-color: var(--color-accent);
+}
+
+.shipping-form__submit:active {
+  transform: scale(0.98);
+}
+
+.shipping-form__submit:disabled {
+  background-color: var(--color-text-disabled);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.shipping-form__error {
+  color: var(--color-accent);
+  font-size: 0.8125rem;
+  margin-top: 6px;
+}

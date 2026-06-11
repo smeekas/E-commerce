@@ -7,6 +7,7 @@ import { navigationPaths } from '../../constants/navigationPaths';
 import { useCart } from '../../context/CartContext';
 import toast from 'react-hot-toast';
 import { Messages } from '../../constants/messages';
+import { getDiscountedValue } from '../../utils/discount';
 
 interface Props {
   product: Product;
@@ -16,10 +17,11 @@ function ProductCard({ product }: Props) {
   const navigate = useNavigate();
   const { updateQty, products } = useCart();
   const inCart = products.some((p) => p.id === product.id);
-  const discountedPrice = (
-    product.price *
-    (1 - product.discountPercentage / 100)
-  ).toFixed(2);
+
+  const discountedPrice = getDiscountedValue(
+    product.price,
+    product.discountPercentage,
+  );
 
   return (
     <div

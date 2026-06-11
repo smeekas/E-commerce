@@ -1,14 +1,41 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CartCard from '../components/CartCard/CartCard';
 import { useCart } from '../context/CartContext';
 import { CartDetail } from '../types/cart';
 import './Cart.css';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { DUMMY_COUPON } from '../constants/coupons';
+import toast from 'react-hot-toast';
+import { Messages } from '../constants/messages';
+import { navigationPaths } from '../constants/navigationPaths';
 
 function Cart() {
   const { products, setDiscount, discount } = useCart();
+  const navigate = useNavigate();
   const ref = useRef<HTMLInputElement | null>(null);
+
+  const cartInfo = useMemo(
+    () =>
+      products.reduce<CartDetail>(
+        (acc, curr) => ({
+          totalItems: acc.totalItems + curr.qty,
+          price: acc.price + curr.price * curr.qty,
+          finalPrice:
+            acc.finalPrice +
+            (1 - curr.discountPercentage / 100) * (curr.price * curr.qty),
+          discount:
+            acc.discount +
+            (curr.discountPercentage / 100) * (curr.price * curr.qty),
+        }),
+        { totalItems: 0, price: 0, finalPrice: 0, discount: 0 },
+      ),
+    [products],
+  );
+
+  const couponDiscount = useMemo(
+    () => (discount === null ? 0 : cartInfo.price * (discount.discount / 100)),
+    [cartInfo, discount],
+  );
   if (products.length === 0) {
     return (
       <div className='cart'>
@@ -39,21 +66,6 @@ function Cart() {
       </div>
     );
   }
-
-  const cartInfo = products.reduce<CartDetail>(
-    (acc, curr) => ({
-      totalItems: acc.totalItems + curr.qty,
-      price: acc.price + curr.price * curr.qty,
-      finalPrice:
-        acc.finalPrice +
-        (1 - curr.discountPercentage / 100) * (curr.price * curr.qty),
-      discount:
-        acc.discount +
-        (curr.discountPercentage / 100) * (curr.price * curr.qty),
-    }),
-    { totalItems: 0, price: 0, finalPrice: 0, discount: 0 },
-  );
-
   const onApply = () => {
     if (!ref.current) return;
     const inputValue = ref.current.value.trim();
@@ -63,13 +75,11 @@ function Cart() {
     if (coupon) {
       setDiscount(coupon);
       ref.current.value = '';
+    } else {
+      toast.error(Messages.ToastMessages.InvalidCoupon);
     }
   };
-  let couponDiscount = 0;
 
-  if (discount) {
-    couponDiscount = cartInfo.price * (discount.discount / 100);
-  }
   return (
     <div className='cart'>
       <h1 className='cart__title'>Shopping Cart</h1>
@@ -99,7 +109,11 @@ function Cart() {
             </div>
           )}
           <div className='coupon-container'>
-            <input placeholder='coupon code' className='coupon' ref={ref} />
+            <input
+              placeholder='coupon code (NEW10)'
+              className='coupon'
+              ref={ref}
+            />
             <button onClick={onApply}>Apply</button>
           </div>
           <div className='cart__summary-divider' />
@@ -114,7 +128,12 @@ function Cart() {
             <span>Total</span>
             <span>${(cartInfo.finalPrice - couponDiscount).toFixed(2)}</span>
           </div>
-          <button className='cart__checkout-btn'>Proceed to Checkout</button>
+          <button
+            className='cart__checkout-btn'
+            onClick={() => navigate(navigationPaths.shippingAddress)}
+          >
+            Proceed to Checkout
+          </button>
         </aside>
       </div>
     </div>
