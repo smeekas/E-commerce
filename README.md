@@ -41,6 +41,8 @@ src/
 | `/products` | Products | Product listing with search & pagination |
 | `/products/:id` | ProductDetail | Full product view — images, specs, reviews |
 | `/cart` | Cart | Cart items, quantity controls, order total |
+| `/cart/shipping` | Shipping address | next step of cart |
+
 
 All routes share a common layout that renders the persistent Header (with live cart badge) and a React Router `<Outlet>`.
 
@@ -69,10 +71,11 @@ VITE_API_PATH=https://dummyjson.com
 - API shapes are typed via a DTO layer, route paths live in constants, and React Query cache keys use an enum, no magic strings anywhere.
 - The loading spinner uses a React Portal so it overlays correctly regardless of where it's triggered.
 - ErrorBoundary for catching global run-time errors
+- Coupon system for extra discounts
+- Dummy filters for product list
+- Modern responsive UI
 
 ## Improvements that can be done with extra time
-- Filters in product listing page (this public API supports filters)
-- Sorting in product listing page (this public API supports sorting)
 - Toggle for different views in product listing (card,list view)
 - Better error handling if API fails with reusable ErrorHandler component
 - Backend based cart (this public API do not supports it though)

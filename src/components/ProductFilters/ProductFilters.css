@@ -11,6 +11,10 @@
   gap: 12px;
 }
 
+.search-section {
+  /* width: 100%; */
+  min-width: 200px;
+}
 .search {
   width: 100%;
   max-width: 440px;
@@ -34,4 +38,135 @@
 
 .search::placeholder {
   color: var(--color-text-disabled);
+}
+
+/* Filters panel (left column) */
+.filters-panel {
+  position: sticky;
+  top: 64px;
+  padding: 18px;
+  width: 100%;
+  max-width: 320px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.filters-section {
+  background: var(--color-surface);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filters-title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.checkbox-label {
+  color: var(--color-text-primary);
+}
+
+.categories-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.price-row {
+  display: flex;
+  gap: 8px;
+}
+
+.price-row input {
+  flex: 1;
+  padding: 8px 10px;
+  max-width: 100px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border-input);
+  background: var(--color-surface);
+}
+
+.price-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.filters-actions {
+  display: flex;
+  justify-content: stretch;
+}
+
+.btn {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--color-brand);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-small {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--color-brand);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-ghost {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+}
+@media screen and (max-width: 900px) {
+  .filters-panel {
+    position: relative;
+    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: none;
+    min-width: 100%;
+  }
+  .filters-section {
+    max-width: 100%;
+    max-width: 250px;
+  }
+  .filters-actions {
+    display: flex;
+    align-self: center;
+  }
+}
+@media screen and (max-width: 650px) {
+  .filters-panel {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 510px) {
+  .filters-panel {
+    grid-template-columns: 1fr;
+  }
+  .filters-section {
+    min-width: 100%;
+    max-width: none;
+  }
 }

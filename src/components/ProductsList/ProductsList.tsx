@@ -51,28 +51,43 @@ function ProductsList() {
       return prev;
     });
   };
-
+  const hasProducts =
+    !isLoading && data?.data && data?.data.products.length > 0;
   return (
     <div className='list-container'>
-      <ProductFilters />
-      <PromotedProducts />
-      <div className='product-list' role='list' aria-busy={isLoading}>
-        {isLoading
-          ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
-              <ProductSkeleton key={i} />
-            ))
-          : data?.data?.products?.map((prodItem) => (
-              <ProductCard key={prodItem.id} product={prodItem} />
-            ))}
-      </div>
-      <div className='pagination'>
-        <button disabled={!hasLess} onClick={prevPage}>
-          Prev
-        </button>
-        <button disabled={!hasMore} onClick={nextPage}>
-          Next
-        </button>
-      </div>
+      <aside className='filters-column'>
+        <ProductFilters />
+      </aside>
+
+      <main className='content-column'>
+        {/* <PromotedProducts /> */}
+        {!hasProducts ? (
+          <div className='error'>not found</div>
+        ) : (
+          <>
+            <div className='product-list' role='list' aria-busy={isLoading}>
+              {isLoading
+                ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+                    <ProductSkeleton key={i} />
+                  ))
+                : data?.data?.products?.map((prodItem) => (
+                    <ProductCard key={prodItem.id} product={prodItem} />
+                  ))}
+            </div>
+          </>
+        )}
+
+        {hasProducts && (
+          <div className='pagination'>
+            <button disabled={!hasLess} onClick={prevPage}>
+              Prev
+            </button>
+            <button disabled={!hasMore} onClick={nextPage}>
+              Next
+            </button>
+          </div>
+        )}
+      </main>
     </div>
   );
 }

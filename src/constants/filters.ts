@@ -5,6 +5,7 @@ export enum Filters {
   Search = 'search',
   SortBy = 'sortBy',
   Order = 'order',
+  Category = 'category',
 }
 export enum SortMode {
   Asc = 'asc',
